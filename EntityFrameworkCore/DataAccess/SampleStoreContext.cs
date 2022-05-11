@@ -12,6 +12,10 @@ namespace EntityFrameworkCore.DataAccess
     {
         //Dbset is object representation of table
         public DbSet<Person> Persons { get; set; }
+        public DbSet<BrandProductInfoResult> BrandProducts { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-ERGIE03\MSSQLSERVER01;Initial Catalog=SampleStore;Integrated Security=True");

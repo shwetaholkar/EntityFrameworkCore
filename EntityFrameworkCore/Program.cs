@@ -12,3 +12,5 @@ SampleStoreTest s1 = new SampleStoreTest();
 //s1.SelectWithSP();
 //s1.SelectWithCustomEntity();
 s1.SelectRelatedData();
+
+

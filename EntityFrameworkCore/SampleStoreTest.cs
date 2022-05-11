@@ -97,7 +97,7 @@ namespace EntityFrameworkCore
             var person = context.Persons.FromSqlRaw("[dbo].[GetAllPersons] @person_id ", sqlParameterPersonId);
 
             Console.WriteLine("------------------Person----------------");
-            foreach(var p in person)
+            foreach (var p in person)
             {
                 Console.WriteLine($"{p.person_id} , {p.first_name} , {p.last_name} , {p.dob}");
 
@@ -114,7 +114,7 @@ namespace EntityFrameworkCore
             var sqlParameterMinPrice = new SqlParameter("@minPrice", System.Data.SqlDbType.Decimal);
             sqlParameterMinPrice.Value = 400;
 
-            using var context= new SampleStoreContext();
+            using var context = new SampleStoreContext();
             var products = context.Set<BrandProductInfoResult>().FromSqlRaw("[dbo].[GetBrandProductInfo] @minPrice", sqlParameterMinPrice).ToList();
 
             Console.WriteLine("------------------Person----------------");
@@ -129,6 +129,31 @@ namespace EntityFrameworkCore
         public void SelectRelatedData()
         {
             using var context = new SampleStoreContext();
+
+            //select * from products
+            var product1=context.Products.ToList();
+
+            //select product_id from products
+            var product2 = context.Products.Select(p => p.product_id).ToList();
+
+            //select * from product where brand_id=5
+            var product3=context.Products.Where(p => p.brand_id==5).ToList();
+
+            //select * from product order by category_id
+            var product4 = context.Products.OrderBy(p => p.category_id).ToList();
+
+           //select product_id , product_name from production.products 
+           //where category_id =1 and brand_id =3
+           //order by product_name
+
+
+
+            var product5 = context.Products
+                .Where(p => p.brand_id == 3 && p.category_id == 1)
+                .OrderBy(p => p.product_name)
+                .Select(p => new ProductResult {ProductId = p.product_id, ProductName = p.product_name}).ToList();
+
+
             var products = context.Products.Include("brand").Include("category").ToList();
             foreach (var p in products)
             {
@@ -138,5 +163,11 @@ namespace EntityFrameworkCore
             Console.WriteLine("----------------------------------------------");
         }
 
+    }
+
+    public class ProductResult
+    {
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
     }
 }

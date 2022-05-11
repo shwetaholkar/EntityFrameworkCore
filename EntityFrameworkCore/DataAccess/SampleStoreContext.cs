@@ -22,3 +22,4 @@ namespace EntityFrameworkCore.DataAccess
         }
     }
 }
+
